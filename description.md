@@ -1,11 +1,11 @@
 # LitNexus
-### A Graph-Based Literary Analysis and Search Engine
+### A Graph-Based Literary Analysis Engine
 
 ## Overview
 
 **LitNexus** is an interactive literary analysis platform that processes the HTML version of Emily Brontë's *Wuthering Heights* to construct a character relationship network and provide an intelligent keyword search engine.
 
-The project combines **graph theory**, **data structures**, **algorithms**, **text processing**, **information retrieval**, and **GUI development** using **Python** and **C++** within the **Windows Subsystem for Linux (WSL)** environment.
+The project combines **graph theory**, **data structures**, **algorithms**, **text processing**, **information retrieval**, and **GUI development** using **Python** and **C++**. The methods of this project are not limited to Brontë's work. 
 
 ---
 
