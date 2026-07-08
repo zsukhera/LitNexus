@@ -25,4 +25,3 @@ Michael	3
 Catherine Heathcliff	2
 John	2
 Mary	2
-Kiss	2
