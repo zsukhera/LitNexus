@@ -65,7 +65,100 @@ public:
     void printGraph() const;
     void saveToFile(const string& filename) const;
 };
+CharacterRelationGraph::CharacterRelationGraph()
+{
+    vertices.clear();
+    characterIndex.clear();
+}
 
+bool CharacterRelationGraph::hasCharacter(const string& name) const
+{
+    return characterIndex.find(name) != characterIndex.end();
+}
+
+void CharacterRelationGraph::addCharacter(const string& name)
+{
+    if (hasCharacter(name))
+        return;
+
+    characterIndex[name] = vertices.size();
+    vertices.push_back(CharacterNode(name));
+}
+
+void CharacterRelationGraph::addRelationship(
+    const string& character1,
+    const string& character2,
+    int weight)
+{
+    // Ignore self loops
+    if (character1 == character2)
+        return;
+
+    // Add characters if they don't already exist
+    if (!hasCharacter(character1))
+        addCharacter(character1);
+
+    if (!hasCharacter(character2))
+        addCharacter(character2);
+
+    int index1 = characterIndex[character1];
+    int index2 = characterIndex[character2];
+
+    //------------------------------------
+    // Update edge from character1 -> character2
+    //------------------------------------
+    bool found = false;
+
+    for (auto &edge : vertices[index1].neighbors)
+    {
+        if (edge.destination == index2)
+        {
+            edge.weight += weight;
+            found = true;
+            break;
+        }
+    }
+
+    if (!found)
+        vertices[index1].neighbors.push_back(Edge(index2, weight));
+
+    //------------------------------------
+    // Update edge from character2 -> character1
+    //------------------------------------
+    found = false;
+
+    for (auto &edge : vertices[index2].neighbors)
+    {
+        if (edge.destination == index1)
+        {
+            edge.weight += weight;
+            found = true;
+            break;
+        }
+    }
+
+    if (!found)
+        vertices[index2].neighbors.push_back(Edge(index1, weight));
+}
+
+void CharacterRelationGraph::printGraph() const
+{
+    for (const auto &vertex : vertices)
+    {
+        cout << vertex.characterName << " -> ";
+
+        for (const auto &edge : vertex.neighbors)
+        {
+            cout << "("
+                 << vertices[edge.destination].characterName
+                 << ", "
+                 << edge.weight
+                 << ") ";
+        }
+
+        cout << endl;
+    }
+}
 
 void CharacterRelationGraph::saveToFile(const string& filename) const
 {
