@@ -42,6 +42,17 @@ class CharacterNode
     {
         characterName = name;
     }
+
+    int getOccureneceCount()
+    {
+        int total = 0;
+        for (const auto &edge : neighbors)
+        {
+            total += edge.weight;
+        }
+
+        return total;
+    }
 };
 
 class CharacterRelationGraph
@@ -54,6 +65,18 @@ public:
     CharacterRelationGraph();
 
     void addCharacter(const string& name);
+    bool containsCharacter(string name)
+    {
+
+    }
+
+    CharacterNode* getCharacter(string name)
+    {
+        if (!hasCharacter(name))
+        return nullptr;
+
+        return &vertices[characterIndex[name]];
+    }
 
     void addRelationship(
         const string& character1,
