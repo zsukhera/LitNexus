@@ -104,5 +104,7 @@ int main()
 
     graph.printGraph();
 
+    //save graph 
+    graph.saveToFile("graph.txt");
     return 0;
 }
