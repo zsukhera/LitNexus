@@ -57,11 +57,11 @@ class CharacterNode
 
 class CharacterRelationGraph
 {
-private:
+
+    public:
     vector<CharacterNode> vertices;
     unordered_map<string, int> characterIndex;
 
-public:
     CharacterRelationGraph();
 
     void addCharacter(const string& name);

@@ -9,7 +9,7 @@
 using namespace std;
 namespace fs = std::filesystem;
 
-int main()
+CharacterRelationGraph returnGraph()
 {
     CharacterRelationGraph graph;
 
@@ -24,7 +24,7 @@ int main()
     if (!fin)
     {
         cerr << "Could not open characters.txt\n";
-        return 1;
+        return graph;
     }
 
     string name;
@@ -102,9 +102,10 @@ int main()
     // Display graph
     //----------------------------------------------------------
 
-    graph.printGraph();
+    // graph.printGraph();
 
     //save graph 
-    graph.saveToFile("graph.txt");
-    return 0;
+    // graph.saveToFile("graph.txt");
+    
+    return graph;
 }
