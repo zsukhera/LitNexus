@@ -5,5 +5,7 @@ using namespace std;
 int main()
 {
     CharacterRelationGraph graph  = returnGraph();
-    bfs(graph,"Lockwood" );
+    // bfs(graph,"Lockwood" );
+    dfs(graph, "Lockwood");
+    dijkstra(graph, "Lockwood" );
 }
