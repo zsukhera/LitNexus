@@ -1,5 +1,6 @@
 #include "../include/mod4.h"
 #include "../include/charRelationGraph.h"
+#include "../include/graphMetrics.h"
 #include "buildGraph.cpp"
 using namespace std;
 int main()
@@ -10,4 +11,6 @@ int main()
     dijkstra(graph, "Lockwood" );
     // floydWarshall(graph);    //output is currently a little messy
     bellmanFord(graph, "Heathcliff");
+
+    printGraphMetrics(graph);
 }
