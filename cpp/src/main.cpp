@@ -8,4 +8,6 @@ int main()
     // bfs(graph,"Lockwood" );
     dfs(graph, "Lockwood");
     dijkstra(graph, "Lockwood" );
+    // floydWarshall(graph);    //output is currently a little messy
+    bellmanFord(graph, "Heathcliff");
 }

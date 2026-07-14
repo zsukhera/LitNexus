@@ -41,6 +41,7 @@ Cluster strongly connected characters into communities.
 #include <queue>
 #include <stack>
 #include <limits>
+#include <iomanip>
 /////////////////////////////////
 /////Shortest Path Algorithms\\\\
 // DFS
@@ -237,9 +238,173 @@ void dijkstra(const CharacterRelationGraph& graph, const string& startCharacter)
     }
 }
 
-//bellman ford 
+// Bellman-Ford Algorithm
+// Finds the shortest path from the starting character to every other character
+// Works with negative edge weights and detects negative weight cycles
+void bellmanFord(const CharacterRelationGraph& graph, const string& startCharacter)
+{
+    if (graph.characterIndex.find(startCharacter) == graph.characterIndex.end())
+    {
+        cout << "Character \"" << startCharacter << "\" not found.\n";
+        return;
+    }
 
-//floyd warshall
+    int V = graph.vertices.size();
+    int start = graph.characterIndex.at(startCharacter);
+
+    vector<int> distance(V, numeric_limits<int>::max());
+    vector<int> previous(V, -1);
+
+    distance[start] = 0;
+
+    // Relax all edges V-1 times
+    for (int i = 0; i < V - 1; i++)
+    {
+        bool updated = false;
+
+        for (int u = 0; u < V; u++)
+        {
+            if (distance[u] == numeric_limits<int>::max())
+                continue;
+
+            for (const Edge& edge : graph.vertices[u].neighbors)
+            {
+                int v = edge.destination;
+                int weight = edge.weight;
+
+                if (distance[u] + weight < distance[v])
+                {
+                    distance[v] = distance[u] + weight;
+                    previous[v] = u;
+                    updated = true;
+                }
+            }
+        }
+
+        // Stop early if no updates were made
+        if (!updated)
+            break;
+    }
+
+    // Check for negative weight cycles
+    for (int u = 0; u < V; u++)
+    {
+        if (distance[u] == numeric_limits<int>::max())
+            continue;
+
+        for (const Edge& edge : graph.vertices[u].neighbors)
+        {
+            int v = edge.destination;
+            int weight = edge.weight;
+
+            if (distance[u] + weight < distance[v])
+            {
+                cout << "Graph contains a negative weight cycle.\n";
+                return;
+            }
+        }
+    }
+
+    cout << "Bellman-Ford Algorithm" << endl;
+    cout << "Shortest distances from " << startCharacter << ":\n\n";
+
+    for (int i = 0; i < V; i++)
+    {
+        cout << graph.vertices[i].characterName << ": ";
+
+        if (distance[i] == numeric_limits<int>::max())
+        {
+            cout << "Unreachable\n";
+        }
+        else
+        {
+            cout << distance[i] << endl;
+        }
+    }
+}
+
+
+// Floyd-Warshall Algorithm
+// Finds the shortest paths between every pair of characters
+// Works with positive and negative edge weights (but not negative cycles)
+void floydWarshall(const CharacterRelationGraph& graph)
+{
+    int V = graph.vertices.size();
+    const int INF = numeric_limits<int>::max();
+
+    // Distance matrix
+    vector<vector<int>> distance(V, vector<int>(V, INF));
+
+    // Initialize distances
+    for (int i = 0; i < V; i++)
+    {
+        distance[i][i] = 0;
+
+        for (const Edge& edge : graph.vertices[i].neighbors)
+        {
+            distance[i][edge.destination] = edge.weight;
+        }
+    }
+
+    // Floyd-Warshall algorithm
+    for (int k = 0; k < V; k++)
+    {
+        for (int i = 0; i < V; i++)
+        {
+            if (distance[i][k] == INF)
+                continue;
+
+            for (int j = 0; j < V; j++)
+            {
+                if (distance[k][j] == INF)
+                    continue;
+
+                if (distance[i][k] + distance[k][j] < distance[i][j])
+                {
+                    distance[i][j] = distance[i][k] + distance[k][j];
+                }
+            }
+        }
+    }
+
+    // Check for negative weight cycles
+    for (int i = 0; i < V; i++)
+    {
+        if (distance[i][i] < 0)
+        {
+            cout << "Graph contains a negative weight cycle.\n";
+            return;
+        }
+    }
+
+    cout << "Floyd-Warshall Algorithm" << endl;
+    cout << "Shortest distances between all pairs of characters:\n\n";
+
+    // Print header
+    cout << setw(15) << "";
+    for (int j = 0; j < V; j++)
+    {
+        cout << setw(15) << graph.vertices[j].characterName;
+    }
+    cout << endl;
+
+    // Print distance matrix
+    for (int i = 0; i < V; i++)
+    {
+        cout << setw(15) << graph.vertices[i].characterName;
+
+        for (int j = 0; j < V; j++)
+        {
+            if (distance[i][j] == INF)
+                cout << setw(15) << "INF";
+            else
+                cout << setw(15) << distance[i][j];
+        }
+
+        cout << endl;
+    }
+}
+
 
 //johnson's algorithm 
 
