@@ -13,4 +13,5 @@ int main()
     bellmanFord(graph, "Heathcliff");
 
     printGraphMetrics(graph);
+    degreeCentrality(graph);
 }

@@ -416,4 +416,33 @@ void floydWarshall(const CharacterRelationGraph& graph)
 //thorup algorithm 
 
 
-//strength of the community may be detected by all pair shortest path 
+//Dgree centrality 
+void degreeCentrality(const CharacterRelationGraph& graph)
+{
+    int maxDegree = -1;
+    string mostCentralCharacter;
+
+    cout << "\n===== Degree Centrality =====\n";
+
+    for (const auto& vertex : graph.vertices)
+    {
+        int degree = vertex.neighbors.size();
+
+        cout << vertex.characterName
+             << " : "
+             << degree
+             << endl;
+
+        if (degree > maxDegree)
+        {
+            maxDegree = degree;
+            mostCentralCharacter = vertex.characterName;
+        }
+    }
+
+    cout << "\nMost Connected Character: "
+         << mostCentralCharacter
+         << " (Degree = "
+         << maxDegree
+         << ")\n";
+}
