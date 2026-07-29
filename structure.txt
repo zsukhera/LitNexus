@@ -2042,7 +2042,6 @@
 ./graph
 ./graph/graph.txt
 ./graph/graphDescription.md
-./gui
 ./output
 ./python
 ./python/__pycache__
@@ -2050,10 +2049,21 @@
 ./python/__pycache__/utils.cpython-312.pyc
 ./python/character_extractor.py
 ./python/config.py
+./python/gui
+./python/gui/__main__.py
+./python/gui/app.py
+./python/gui/graph_parser.py
+./python/gui/graph_view.py
+./python/gui/main_window.py
+./python/gui/requirements_gui.txt
+./python/gui/search_engine.py
+./python/gui/search_panel.py
+./python/gui/stats_panel.py
 ./python/html_parser.py
 ./python/split_characters.py
 ./python/split_paragraphs.py
 ./python/utils.py
+./run_gui.sh
 ./structure.txt
 
-16 directories, 2041 files
+16 directories, 2051 files
