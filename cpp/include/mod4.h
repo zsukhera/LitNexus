@@ -22,7 +22,7 @@ using namespace std;
     7.  Bidirectional Search (Bidirectional BFS)
     8.  Viterbi Algorithm    (Max-Weight Path DP)
     9.  Gabow's Algorithm    (Strongly Connected Components)
-   10.  Thorup Algorithm     (Dial / Bucket-Queue SSSP)
+   10.  Dial's Algorithm     (Bucket-Queue SSSP)
 =============================================================
 */
 
@@ -950,16 +950,14 @@ void gabowSCC(const CharacterRelationGraph& graph)
 
 
 // ─────────────────────────────────────────────────────────
-// 10. THORUP ALGORITHM (Bucket-Queue / Dial's Variant)
+// 10. DIAL'S ALGORITHM (Bucket-Queue SSSP)
 //     Single-source shortest paths for non-negative
 //     integer edge weights.
 //     Uses a bucket array of size (max_weight * V + 1)
 //     instead of a binary heap, giving O(E + V * W)
 //     time where W is the maximum edge weight.
-//     This is the practical foundation of Thorup's
-//     linear-time framework for undirected graphs.
 // ─────────────────────────────────────────────────────────
-void thorup(const CharacterRelationGraph& graph,
+void dial(const CharacterRelationGraph& graph,
             const string& startCharacter)
 {
     if (graph.characterIndex.find(startCharacter) == graph.characterIndex.end())
@@ -987,7 +985,7 @@ void thorup(const CharacterRelationGraph& graph,
     if (maxWeight == 0)
     {
         // No edges — every vertex is unreachable except source
-        cout << "\n===== Thorup Algorithm (Bucket-Queue SSSP) =====\n";
+        cout << "\n===== Dial's Algorithm (Bucket-Queue SSSP) =====\n";
         cout << "Shortest distances from " << startCharacter << ":\n\n";
         cout << startCharacter << ": 0\n";
 
@@ -1040,7 +1038,7 @@ void thorup(const CharacterRelationGraph& graph,
         }
     }
 
-    cout << "\n===== Thorup Algorithm (Bucket-Queue SSSP) =====\n";
+    cout << "\n===== Dial's Algorithm (Bucket-Queue SSSP) =====\n";
     cout << "Shortest distances from " << startCharacter << ":\n\n";
 
     for (int i = 0; i < V; i++)

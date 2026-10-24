@@ -118,7 +118,7 @@ All implemented in `cpp/include/mod4.h` and `cpp/include/mod6.h`.
 | 7 | **Bidirectional BFS** | Shortest hop-path between any two characters |
 | 8 | **Viterbi** | Max-weight path of exactly K steps from a character |
 | 9 | **Gabow's SCC** | Strongly connected components via two-stack DFS |
-| 10 | **Thorup (Dial/Bucket-Queue)** | SSSP with O(E + V·W) bucket-queue |
+| 10 | **Dial's Algorithm (Bucket-Queue)** | SSSP with O(E + V·W) bucket-queue |
 
 ### Search engine (`mod6.h`)
 
@@ -148,7 +148,7 @@ johnsonsAlgorithm(graph);
 bidirectionalSearch(graph, "Heathcliff", "Edgar");
 viterbi(graph, "Catherine", /*steps=*/3);
 gabowSCC(graph);
-thorup(graph, "Heathcliff");
+dial(graph, "Heathcliff");
 
 // Graph metrics
 printGraphMetrics(graph);  // vertices, edges, density, average degree
@@ -188,6 +188,62 @@ Each number is the co-occurrence count across all paragraphs.
 | NLP / NER | Python · spaCy (`en_core_web_sm`) |
 | Graph core | C++17 · STL only |
 | GUI | Qt (launched via `run_gui.sh`) |
+
+---
+
+## Results
+
+Running the pipeline on the Project Gutenberg edition of *Wuthering Heights* (pg768) yields the following.
+
+### Graph structure
+
+| Metric | Value |
+|--------|-------|
+| Characters (vertices) | 27 |
+| Relationships (edges) | 165 |
+| Graph density | 0.47 |
+| Average degree | 12.22 |
+
+The network is highly dense for a social graph — almost half of all possible character pairs share at least one paragraph together — which reflects Brontë's tight, enclosed cast.
+
+### PageRank (top 10)
+
+PageRank measures structural influence: a character scores higher by being connected to other well-connected characters, not just by appearing frequently.
+
+| Rank | Character | PageRank |
+|------|-----------|----------|
+| 1 | Catherine | 0.0683 |
+| 2 | Linton¹ | 0.0627 |
+| 3 | Heathcliff | 0.0603 |
+| 4 | Earnshaw | 0.0600 |
+| 5 | Joseph | 0.0565 |
+| 6 | Edgar | 0.0511 |
+| 7 | Hareton | 0.0492 |
+| 8 | Isabella | 0.0478 |
+| 9 | Hindley | 0.0457 |
+| 10 | Dean (Nelly) | 0.0416 |
+
+**Catherine** ranks first despite Heathcliff having the highest raw interaction count. PageRank rewards her central brokering role — she connects the Earnshaw household, the Linton household, and Heathcliff's orbit simultaneously. Nelly Dean's position at #10 is consistent with her narrative role as the story's primary observer.
+
+> ¹ *"Linton" is a spaCy NER conflation of Edgar Linton, Linton Heathcliff (Heathcliff's son), and the Linton family name — a known limitation of the co-occurrence approach on this text.*
+
+### Weighted degree (top 5)
+
+Weighted degree sums total co-occurrence counts, measuring raw interaction volume rather than structural position.
+
+| Character | Weighted Degree |
+|-----------|----------------|
+| Heathcliff | 503 |
+| Linton¹ | 473 |
+| Catherine | 470 |
+| Earnshaw | 226 |
+| Hareton | 214 |
+
+Heathcliff overtakes Catherine here: he shares scenes with nearly every character across both generations of the story, accumulating more total paragraph co-occurrences than anyone else.
+
+### Community detection
+
+With a graph density of 0.47, Label Propagation converges to **one community** — the entire cast. This is an honest structural result: Brontë's isolated Yorkshire setting and multi-generational entanglement mean every character eventually shares scenes with every other, leaving no distinct subgroup to separate out. Algorithms that enforce a minimum modularity threshold (e.g. Louvain) would be needed to surface finer-grained communities within this network.
 
 ---
 
